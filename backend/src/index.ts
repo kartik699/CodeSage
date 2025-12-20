@@ -1,18 +1,20 @@
 import express from "express";
 import cors from "cors";
+import MainRouter from "../routes";
 
 const app = express();
+const PORT = process.env.PORT;
 
 app.use(cors());
 app.use(express.json());
 
-const PORT = process.env.PORT;
-
-app.get("/health", (_req, res) => {
+app.get("/", (_req, res) => {
   return res.json({
-    status: "backend ok (bun)",
+    message: "Hello CodeSage!",
   });
 });
+
+app.use("/", MainRouter);
 
 app.listen(PORT, () => {
   console.log(`Backend running on PORT: ${PORT}`);
