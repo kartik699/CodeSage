@@ -11,6 +11,7 @@ import { AgentResponse, ExpressResponse } from "@/models/agentResponse";
 export default function Home() {
   const [query, setQuery] = useState<string>("");
   const [agentResponse, setAgentResponse] = useState<AgentResponse>();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const submitQuery = async () => {
     if (!query.trim()) {
@@ -20,19 +21,22 @@ export default function Home() {
     }
 
     try {
+      setLoading(true);
       const res = await axios.post<ExpressResponse>(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/chat`,
         {
           ques: query,
-          repoPath: "a/b/c/d/e",
+          repoPath: "a/b/c/d/e", // TODO: Change later. Placeholder for now
         }
       );
 
       if (res.status === 200) {
         setAgentResponse(res.data.data);
       }
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -50,14 +54,17 @@ export default function Home() {
         placeholder="Example - Where is Auth handled?"
         className="mb-2"
         onChange={(e) => setQuery(e.target.value)}
+        disabled={loading}
       ></Input>
       <Button
         variant="default"
         className="cursor-pointer"
         onClick={submitQuery}
+        disabled={loading}
       >
         Ask
       </Button>
+      {loading && <div>Loading AI Response...</div>}
       {agentResponse && (
         <div className="mt-4">
           <span>AI: {agentResponse.result}</span>

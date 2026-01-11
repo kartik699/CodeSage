@@ -1,12 +1,7 @@
-import sys
-from pathlib import Path
-
-# Add the agent directory to Python path
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
 from fastapi import FastAPI
 from models.payload import Payload
 from models.response import AgentResponse
+from agent.main import run_agent_graph
 
 app = FastAPI(title="CodeSage Agent")
 
@@ -25,4 +20,12 @@ def run_agent(payload: Payload) -> AgentResponse:
     :rtype: str
     """
 
-    return AgentResponse(result=payload.ques, numFiles=2, filesChecked=["package.json", "package-lock.json"])
+    print(payload)
+
+    res = run_agent_graph(user_query=payload.ques, repo_path=payload.repo_path)
+    
+    return AgentResponse(
+        result=res["analysis"],
+        numFiles=res["num_files"],
+        filesChecked=res["files"]
+    )

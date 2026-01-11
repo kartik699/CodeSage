@@ -21,7 +21,7 @@ export const sendToAgent = async (req: Request, res: Response) => {
   try {
     const agentRes = await axios.post<AgentResponse>(`${baseUrl}/chat`, {
       ques,
-      repoPath,
+      repo_path: repoPath,
     });
 
     return res.status(200).json({

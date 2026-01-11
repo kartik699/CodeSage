@@ -1,5 +1,5 @@
 import uvicorn
-from config import PORT
+from app.config import PORT
 
 def run_server():
     uvicorn.run("server:app", port=PORT, host="localhost", reload=True)

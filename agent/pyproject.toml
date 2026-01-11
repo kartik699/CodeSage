@@ -1,12 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
 name = "codesage-agent"
 version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
+description = "AI-powered code exploration and analysis agent"
 requires-python = ">=3.14"
 dependencies = [
     "fastapi[standard]>=0.125.0",
+    "langchain>=1.2.0",
+    "langgraph>=1.0.5",
+    "langchain-ollama>=1.0.1",
     "pydantic>=2.12.5",
     "python-dotenv>=1.2.1",
     "uvicorn>=0.38.0",
+    "langsmith>=0.5.0",
+    "langchain-google-genai>=4.1.2",
 ]
+
+[tool.hatch.build.targets.wheel]
+packages = ["agent", "app", "models"]
